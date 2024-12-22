@@ -30,7 +30,7 @@ let bills = [
 
 // GET All bills
 app.get('/api/bills', (request, response) => {
-  response.json(persons)
+  response.json(bills)
 });
 
 // GET specific ID bill
