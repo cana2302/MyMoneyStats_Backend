@@ -1,72 +1,66 @@
-require('dotenv').config();
 const express = require('express');
-const cors = require('cors');
 const app = express();
+require('dotenv').config();
 
 const Bill = require('./models/bill');
 
+let bills = [];
+
 app.use(express.static('dist'));
 
+const requestLogger = (request, response, next) => {
+  console.log('Method:', request.method)
+  console.log('Path:  ', request.path)
+  console.log('Body:  ', request.body)
+  console.log('---')
+  next()
+};
+
+const cors = require('cors');
 app.use(cors());
 app.use(express.json());
+app.use(requestLogger);
 
-let bills = [
-  { 
-    "id": 1,
-    "category": "Tax", 
-    "description": "Cellphone",
-    "number": "30"
-  },
-  { 
-    "id": 2,
-    "category": "Tax", 
-    "description": "Rent",
-    "number": "700"
-  },
-  { 
-    "id": 3,
-    "category": "Supermarket", 
-    "description": "Carrefour",
-    "number": "15"
-  }
-]
+const unknownEndpoint = (request, response) => {
+  response.status(404).send({ error: 'unknown endpoint' })
+};
 
 // ----- GET ------
 
 // GET All bills
 app.get('/api/bills', (request, response) => {
-  response.json(bills)
+  Bill.find({}).then(bills => {
+    response.json(bills)
+  })
 });
 
 // GET specific ID bill
 app.get('/api/bills/:id', (request, response, next) => {
-  Bill.findById(request.params.id)
-  .then(bill => {
-    if (bill) {
-      response.json(bill)
-    } else {
-      response.status(404).end()
-    }
+  Bill.findById(request.params.id).then(bill => {
+    response.json(bill)
   })
-  .catch(error => next(error))
-}); 
+
+if (bill) {
+    response.json(bill)
+  } else {
+    response.status(404).end()
+  }
+});
 
 // GET Information & CurrentDate
 app.get('/info', (request, response) => {
-  const number = bills.length
-  const currentDate = new Date(); // Si también quieres agregar la fecha actual, por ejemplo.
-  
-  response.send(
-    `<p>My Money Stats has ${number} bills</p>
-     <p>${currentDate}</p>`
-  )
+  Bill.find({}).then(bill => {
+    const number = bills.length
+    const currentDate = new Date(); // Si también quieres agregar la fecha actual, por ejemplo.
+    
+    response.send(
+      `<p>My Money Stats has ${number} bills</p>
+       <p>${currentDate}</p>`
+    );
+  })
 });
 
 // ----- POST --------
-const generateId = () => {
-  return Math.floor(Math.random() * 1000000) + 1;
-};
-
 app.post('/api/bills', (request, response) => {
   const body = request.body;
  
@@ -86,19 +80,8 @@ app.post('/api/bills', (request, response) => {
 
 });
 
-// -------------
-const errorHandler = (error, request, response, next) => {
-  console.error(error.message)
-
-  if (error.name === 'CastError') {
-    return response.status(400).send({ error: 'malformatted id' })
-  } 
-
-  next(error)
-}
-
-// este debe ser el último middleware cargado, ¡también todas las rutas deben ser registrada antes que esto!
-app.use(errorHandler)
+// ------ unknown endpoint --------
+app.use(unknownEndpoint);
 
 // ----- PORT -------
 const PORT = process.env.PORT || 3001
