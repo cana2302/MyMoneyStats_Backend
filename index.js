@@ -49,7 +49,7 @@ if (bill) {
 
 // GET Information & CurrentDate
 app.get('/info', (request, response) => {
-  Bill.find({}).then(bill => {
+  Bill.find({}).then(bills => {
     const number = bills.length
     const currentDate = new Date(); // Si también quieres agregar la fecha actual, por ejemplo.
     
