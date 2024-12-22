@@ -3,7 +3,7 @@ const express = require('express');
 const cors = require('cors');
 const app = express();
 
-const Bill = require('./models/note');
+const Bill = require('./models/bill');
 
 app.use(express.static('dist'));
 
