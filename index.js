@@ -1,6 +1,9 @@
+require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const app = express();
+
+const Bill = require('./models/note');
 
 app.use(express.static('dist'));
 
@@ -36,15 +39,16 @@ app.get('/api/bills', (request, response) => {
 });
 
 // GET specific ID bill
-app.get('/api/bills/:id', (request, response) => {
-  const id = Number(request.params.id)
-  const bill = bills.find(bill => bill.id === id)
-  
-  if (bill) {
-    response.json(bill)
-  } else {
-    response.status(404).end()
-  }
+app.get('/api/bills/:id', (request, response, next) => {
+  Bill.findById(request.params.id)
+  .then(bill => {
+    if (bill) {
+      response.json(bill)
+    } else {
+      response.status(404).end()
+    }
+  })
+  .catch(error => next(error))
 }); 
 
 // GET Information & CurrentDate
@@ -64,24 +68,37 @@ const generateId = () => {
 };
 
 app.post('/api/bills', (request, response) => {
-  const { category, description, number } = request.body;
+  const body = request.body;
  
-  if (!category || !description || !number) {
-    return response.status(400).json({ 
-      error: 'content missing' 
-    });
+  if (body.category === undefined || body.description === undefined || body.number === undefined) {
+    return response.status(400).json({ error: 'content missing' })
   }
 
-  const bill = {
-    id: generateId(),
-    category: category,
-    description: description,
-    number: number,
-  };
+  const bill = new Bill({
+    category: body.category,
+    description: body.description,
+    number: body.number,
+  });
 
-  bills = bills.concat(bill);
-  response.json(bill);
+  bill.save().then(savedBill => {
+    response.json(savedBill)
+  });
+
 });
+
+// -------------
+const errorHandler = (error, request, response, next) => {
+  console.error(error.message)
+
+  if (error.name === 'CastError') {
+    return response.status(400).send({ error: 'malformatted id' })
+  } 
+
+  next(error)
+}
+
+// este debe ser el último middleware cargado, ¡también todas las rutas deben ser registrada antes que esto!
+app.use(errorHandler)
 
 // ----- PORT -------
 const PORT = process.env.PORT || 3001
