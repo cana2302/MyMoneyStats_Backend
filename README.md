@@ -4,7 +4,7 @@
 
 Backend codebase for my portofolio.
 
-A financial control app. Designed to help individuals or businesses manage and monitor their finances efficiently. This app allow you to organize income, expenses, budgets, investments, and debts, offering a clear view of your financial status in real time. Its main goal is to help you make informed financial decisions, improve planning, and avoid financial mistakes.
+A financial control app. Designed to help manage and monitor their finances efficiently. This app allow you to organize income, expenses, budgets, investments, and debts, offering a clear view of your financial status in real time. Its main goal is to help you make informed financial decisions, improve planning, and avoid financial mistakes.
 
 Link to my online application:
 
@@ -64,3 +64,8 @@ npm run dev
 ## Developer
 
 - Franco Ariel Canavese
+
+## License
+
+This project is licensed under the [MIT License](LICENSE).
+
