@@ -10,8 +10,6 @@ Link to my online application:
 
 https://mymoneystats-backend.onrender.com
 
-Franco Ariel Canavese
-
 ## Requirements
 
 -   Node.js >= 22.x
