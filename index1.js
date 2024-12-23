@@ -8,9 +8,22 @@ let bills = [];
 
 app.use(express.static('dist'));
 
+const requestLogger = (request, response, next) => {
+  console.log('Method:', request.method)
+  console.log('Path:  ', request.path)
+  console.log('Body:  ', request.body)
+  console.log('---')
+  next()
+};
+
 const cors = require('cors');
 app.use(cors());
 app.use(express.json());
+app.use(requestLogger);
+
+const unknownEndpoint = (request, response) => {
+  response.status(404).send({ error: 'unknown endpoint' })
+};
 
 // ----- GET ------
 
@@ -23,15 +36,15 @@ app.get('/api/bills', (request, response) => {
 
 // GET specific ID bill
 app.get('/api/bills/:id', (request, response, next) => {
-  Bill.findById(request.params.id)
-  .then(bill => {
-    if (bill) {
-      response.json(bill)
-    } else {
-      response.status(404).end()
-    }
+  Bill.findById(request.params.id).then(bill => {
+    response.json(bill)
   })
-  .catch(error => next(error))
+
+if (bill) {
+    response.json(bill)
+  } else {
+    response.status(404).end()
+  }
 });
 
 // GET Information & CurrentDate
@@ -67,34 +80,8 @@ app.post('/api/bills', (request, response) => {
 
 });
 
-// ----- DELETE ------
-app.delete('/api/bills/:id', (request, response, next) => {
-  Note.findByIdAndDelete(request.params.id)
-    .then(result => {
-      response.status(204).end()
-    })
-    .catch(error => next(error))
-});
-
-
-//------ unknown endpoint --------
-const unknownEndpoint = (request, response) => {
-  response.status(404).send({ error: 'unknown endpoint' })
-};
-// controlador de solicitudes con endpoint desconocido
+// ------ unknown endpoint --------
 app.use(unknownEndpoint);
-
-//---- middleware de manejo de errores ------------
-const errorHandler = (error, request, response, next) => {
-  console.error(error.message)
-  if (error.name === 'CastError') {
-    return response.status(400).send({ error: 'malformatted id' })
-  } 
-  next(error)
-};
-//--controlador de solicitudes que resulten en errores
-app.use(errorHandler);
-
 
 // ----- PORT -------
 const PORT = process.env.PORT || 3001
