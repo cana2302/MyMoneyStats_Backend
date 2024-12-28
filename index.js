@@ -69,7 +69,7 @@ app.post('/api/bills', (request, response) => {
 
 // ----- DELETE ------
 app.delete('/api/bills/:id', (request, response, next) => {
-  Note.findByIdAndDelete(request.params.id)
+  Bill.findByIdAndDelete(request.params.id)
     .then(result => {
       response.status(204).end()
     })
