@@ -58,6 +58,10 @@ npm run dev
 
 ## Technologies
 
+This project use React.js as frontend. 
+Node.js at backend. 
+The backend communicate with online MongoDB.
+
 - React
 - Node
 
