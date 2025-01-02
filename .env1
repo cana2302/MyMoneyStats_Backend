@@ -1,0 +1,2 @@
+MONGODB_URI=mongodb+srv://cana2302:6kzGB5HFfvpGolUp@cluster0.d8fny.mongodb.net/myMoneyStatsApp?retryWrites=true&w=majority
+PORT=3001
