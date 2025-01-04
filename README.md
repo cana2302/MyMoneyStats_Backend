@@ -54,7 +54,7 @@ npm install
 npm run dev
 ```
 
-5. Insert in the browser http://localhost:5173/
+5. Insert in the browser http://localhost:3001/
 
 ## Technologies
 
