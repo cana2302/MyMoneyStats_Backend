@@ -28,7 +28,7 @@ https://mymoneystats-backend.onrender.com
   ## First steps
 
 > [!NOTE]
-> The project is using node, ...prettier, husky and commitlint for mantain good practices and standars.
+> The project is using Node, Express, Mongoose, CORS, Dotenv and ESlint for maintain good practices and standards.
 
 1. Clone the repository
 
