@@ -1,0 +1,1 @@
+GET https://mymoneystats-backend.onrender.com/api/bills
