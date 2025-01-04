@@ -1,20 +1,8 @@
+/*  
+  ---- Modulo 'models' -----
+  Es un modulo dedicado a definir solo el esquema Mongoose para las 'bills' 
+*/
 const mongoose = require('mongoose');
-
-mongoose.set('strictQuery', false);
-
-
-const url = process.env.MONGODB_URI
-
-console.log('connecting to', url);
-
-mongoose.connect(url)
-
-  .then(result => {
-    console.log('connected to MongoDB')
-  })
-  .catch(error => {
-    console.log('error connecting to MongoDB:', error.message)
-  })
 
 const billSchema = new mongoose.Schema({
   category: String,
