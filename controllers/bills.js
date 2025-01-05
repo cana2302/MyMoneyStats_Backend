@@ -17,7 +17,7 @@ billsRouter.get('/', (request, response) => {
 });
 
 // GET specific ID bill
-billsRouter.get('/:id', (request, response, next) => {
+billsRouter.get('/id/:id', (request, response, next) => {
   Bill.findById(request.params.id)
   .then(bill => {
     if (bill) {
