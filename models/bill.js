@@ -4,9 +4,9 @@
 */
 const mongoose = require('mongoose');
 
-const amountValidator = function(amount) {
+const amountValidator = function(amount_) {
   const amountRegex = /^\d+(\.\d+)?$/
-  return amountRegex.test(amount)
+  return amountRegex.test(amount_)
 }
 
 const billSchema = new mongoose.Schema({
@@ -20,7 +20,7 @@ const billSchema = new mongoose.Schema({
     require: true
   },
   description: String,
-  number: {
+  amount: {
     type: String,
     require: true,
     validate: {

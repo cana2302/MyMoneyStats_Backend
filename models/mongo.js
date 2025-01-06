@@ -17,17 +17,19 @@ mongoose.set('strictQuery',false)
 mongoose.connect(url)
 
 const billSchema = new mongoose.Schema({
+  date: String,
   category: String,
   description: String,
-  number: String,
+  amount: String,
 })
 
 const Bill = mongoose.model('Bill', billSchema)
 
 const bill = new Bill({
+  date:'2025-01-01',
   category: 'Food',
   description: 'Mexican Bar',
-  number: '25',
+  amount: '25',
 })
 
 bill.save().then(result => {

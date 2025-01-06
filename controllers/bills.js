@@ -32,11 +32,11 @@ billsRouter.get('/id/:id', (request, response, next) => {
 // GET Information & CurrentDate
 billsRouter.get('/info', (request, response) => {
   Bill.find({}).then(bills => {
-    const number = bills.length
+    const number_bills = bills.length
     const currentDate = new Date(); // Si también quieres agregar la fecha actual, por ejemplo.
     
     response.send(
-      `<p>My Money Stats has ${number} bills</p>
+      `<p>My Money Stats has ${number_bills} bills</p>
        <p>${currentDate}</p>`
     );
   })
@@ -46,7 +46,7 @@ billsRouter.get('/info', (request, response) => {
 billsRouter.post('/', (request, response) => {
   const body = request.body;
  
-  if (body.date === undefined || body.category === undefined || body.description === undefined || body.number === undefined) {
+  if (body.date === undefined || body.category === undefined || body.description === undefined || body.amount === undefined) {
     return response.status(400).json({ error: 'content missing' })
   }
 
@@ -54,7 +54,7 @@ billsRouter.post('/', (request, response) => {
     date: body.date,
     category: body.category,
     description: body.description,
-    number: body.number,
+    amount: body.amount,
   });
 
   bill.save().then(savedBill => {
