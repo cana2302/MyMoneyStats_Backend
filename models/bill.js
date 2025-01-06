@@ -4,10 +4,30 @@
 */
 const mongoose = require('mongoose');
 
+const amountValidator = function(amount) {
+  const amountRegex = /^\d+(\.\d+)?$/
+  return amountRegex.test(amount)
+}
+
 const billSchema = new mongoose.Schema({
-  category: String,
+  date: {
+    type: String,
+    require: true
+  },
+  category: {
+    type: String,
+    minLength: 3,
+    require: true
+  },
   description: String,
-  number: String,
+  number: {
+    type: String,
+    require: true,
+    validate: {
+      validator: amountValidator,
+      message: props => `${props.value} is not a valid amount!`
+    }
+  }
 });
 
 billSchema.set('toJSON', {

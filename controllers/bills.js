@@ -46,11 +46,12 @@ billsRouter.get('/info', (request, response) => {
 billsRouter.post('/', (request, response) => {
   const body = request.body;
  
-  if (body.category === undefined || body.description === undefined || body.number === undefined) {
+  if (body.date === undefined || body.category === undefined || body.description === undefined || body.number === undefined) {
     return response.status(400).json({ error: 'content missing' })
   }
 
   const bill = new Bill({
+    date: body.date,
     category: body.category,
     description: body.description,
     number: body.number,
