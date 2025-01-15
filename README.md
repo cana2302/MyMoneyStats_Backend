@@ -5,11 +5,11 @@
 Codebase for my portfolio.
 
 Fullstack aplication:  
-  -Frontend> UI> React.js (./dist)  
-  -Backend> Server-side logic> Node.js with Express. (Handling HTTP requests, interacting with database, authentication, data processing)  
-  -Database: MongoDB.
+>-Frontend> UI> React.js (./dist)  
+>-Backend> Server-side logic> Node.js with Express. (Handling HTTP requests, interacting with database, authentication, data processing)  
+>-Database: MongoDB.
 
-## About the aplication
+## About the application
 
 A financial control app. Designed to help manage and monitor their finances efficiently. This app allow you to organize income, expenses, budgets, investments, and debts, offering a clear view of your financial status in real time. Its main goal is to help you make informed financial decisions, improve planning, and avoid financial mistakes.
 
@@ -27,7 +27,7 @@ https://mymoneystats-backend.onrender.com
 
 - [My Money Stats - Backend](#my-money-stats-backend)
   - [About the project](#about-the-project)
-  - [About the aplication](#about-the-aplication)
+  - [About the application](#about-the-application)
   - [Table of contents](#table-of-contents)
   - [First steps](#first-steps)
   - [Technologies](#technologies)
@@ -36,12 +36,12 @@ https://mymoneystats-backend.onrender.com
   ## First steps
 
 > [!NOTE]
-> The project connects to a MongoDB database.  
-To deploy the project locally, you can either choose to connect to a local MongoDB database (using MongoDB Community Edition) and manage the database yourself, or you can opt to connect the project to an online MongoDB Cluster.
+> The project connects to a MongoDB database. To deploy the project locally, you can either choose to connect to a local MongoDB database (using MongoDB Community Edition) and manage the database yourself, or you can opt to connect the project to an online MongoDB Cluster.  
 In either case, it is important to define environment variables before deploying the project ('.env'):  
-> -MONGODB_URI  
-> -PORT (define the listening port: 3001 or another)  
-
+```
+>-MONGODB_URI  
+>-PORT (define the listening port: 3001 or another)  
+```
 1. Clone the repository
 
 ```bash
@@ -70,11 +70,11 @@ npm run dev
 
 ## Technologies
 
-This project use React.js as frontend. 
+This project use React.js as frontend.  
 At backend using Node.js with Express, Mongoose, CORS, Dotenv and ESlint for maintain good practices and standards.  
 
 Se utiliza la libreria bcrypt para almacenar los hash en la base de datos.  
-se utiliza la libreria jwt para generar token para la autenticacion de los usuarios.  
+Se utiliza la libreria jwt para generar token para la autenticacion de los usuarios.  
 
 ## Developer
 
