@@ -6,45 +6,42 @@
 
 const billsRouter = require('express').Router()
 const Bill = require('../models/bill')
+const User = require('../models/user')
 
 // ----- GET ------
 
 // GET All bills
-billsRouter.get('/', (request, response) => {
-  Bill.find({}).then(bills => {
-    response.json(bills)
-  })
-});
+billsRouter.get('/', async (request, response) => {
+  const bills = await Bill.find({})    // .populate('user', { username: 1, email: 1 })
+  response.json(bills)
+})
 
 // GET specific ID bill
-billsRouter.get('/id/:id', (request, response, next) => {
-  Bill.findById(request.params.id)
-  .then(bill => {
-    if (bill) {
-      response.json(bill)
-    } else {
-      response.status(404).end()
-    }
-  })
-  .catch(error => next(error))
-});
+billsRouter.get('/id/:id', async (request, response) => {
+  const bill = await Bill.findById(request.params.id)
+  if (bill) {
+    response.json(bill)
+  } else {
+    response.status(404).end()
+  }
+})
 
 // GET Information & CurrentDate
-billsRouter.get('/info', (request, response) => {
-  Bill.find({}).then(bills => {
-    const number_bills = bills.length
-    const currentDate = new Date(); // Si también quieres agregar la fecha actual, por ejemplo.
-    
-    response.send(
-      `<p>My Money Stats has ${number_bills} bills</p>
-       <p>${currentDate}</p>`
-    );
-  })
-});
+billsRouter.get('/info', async (request, response) => {
+  const bills = await Bill.find({})
+  const number_bills = bills.length
+  const currentDate = new Date()
+
+  response.send(
+    `<p>My Money Stats has ${number_bills} bills</p>
+     <p>${currentDate}</p>`
+  )
+})
 
 // ----- POST --------
-billsRouter.post('/', (request, response) => {
+billsRouter.post('/', async (request, response) => {
   const body = request.body;
+  const user = await User.findById(body.userId)
  
   if (body.date === undefined || body.category === undefined || body.description === undefined || body.amount === undefined) {
     return response.status(400).json({ error: 'content missing' })
@@ -55,20 +52,19 @@ billsRouter.post('/', (request, response) => {
     category: body.category,
     description: body.description,
     amount: body.amount,
+    user: user.id
   });
 
-  bill.save().then(savedBill => {
-    response.json(savedBill)
-  });
+  const savedBill = await bill.save()
+  user.bills = user.bills.concat(savedBill._id)
+  await user.save()
+  response.status(201).json(savedBill)
 });
 
 // ----- DELETE ------
-billsRouter.delete('/:id', (request, response, next) => {
-  Bill.findByIdAndDelete(request.params.id)
-    .then(result => {
-      response.status(204).end()
-    })
-    .catch(error => next(error))
+billsRouter.delete('/:id', async (request, response) => {
+  await Bill.findByIdAndDelete(request.params.id)
+  response.status(204).end()
 });
 
 // ---- EXPORT  modulo ----

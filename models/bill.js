@@ -27,6 +27,10 @@ const billSchema = new mongoose.Schema({
       validator: amountValidator,
       message: props => `${props.value} is not a valid amount!`
     }
+  },
+  user: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User'
   }
 });
 
