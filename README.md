@@ -5,9 +5,9 @@
 Codebase for my portfolio.
 
 Fullstack application:  
-```-Frontend> UI> React.js (./dist)  
-```-Backend> Server-side logic> Node.js with Express. (Handling HTTP requests, interacting with database, authentication, data processing)  
-```-Database: MongoDB.
+&nbsp;&nbsp;&nbsp;&nbsp;-Frontend> UI> React.js (./dist)  
+&nbsp;&nbsp;&nbsp;&nbsp;-Backend> Server-side logic> Node.js with Express. (Handling HTTP requests, interacting with database, authentication, data processing)  
+&nbsp;&nbsp;&nbsp;&nbsp;-Database: MongoDB.
 
 ## About the application
 
@@ -38,8 +38,8 @@ https://mymoneystats-backend.onrender.com
 > [!NOTE]
 > The project connects to a MongoDB database. To deploy the project locally, you can either choose to connect to a local MongoDB database (using MongoDB Community Edition) and manage the database yourself, or you can opt to connect the project to an online MongoDB Cluster.  
 In either case, it is important to define environment variables before deploying the project ('.env'):  
-```-MONGODB_URI  
-```-PORT (define the listening port: 3001 or another)  
+&nbsp;&nbsp;&nbsp;&nbsp;-MONGODB_URI  
+&nbsp;&nbsp;&nbsp;&nbsp;-PORT (define the listening port: 3001 or another)  
 
 1. Clone the repository
 
