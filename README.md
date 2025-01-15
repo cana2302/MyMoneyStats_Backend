@@ -4,9 +4,9 @@
 
 Codebase for my portfolio.
 
-Fullstack aplication:
-  -Frontend> UI> React.js (./dist)
-  -Backend> Server-side logic> Node.js with Express. (Handling HTTP requests, interacting with database, authentication, data processing)
+Fullstack aplication:  
+  -Frontend> UI> React.js (./dist)  
+  -Backend> Server-side logic> Node.js with Express. (Handling HTTP requests, interacting with database, authentication, data processing)  
   -Database: MongoDB.
 
 ## About the aplication
@@ -36,11 +36,11 @@ https://mymoneystats-backend.onrender.com
   ## First steps
 
 > [!NOTE]
-> The project connects to a MongoDB database.
+> The project connects to a MongoDB database.  
 To deploy the project locally, you can either choose to connect to a local MongoDB database (using MongoDB Community Edition) and manage the database yourself, or you can opt to connect the project to an online MongoDB Cluster.
-In either case, it is important to define environment variables before deploying the project ('.env'):
-> -MONGODB_URI
-> -PORT (define the listening port: 3001 or another)
+In either case, it is important to define environment variables before deploying the project ('.env'):  
+> -MONGODB_URI  
+> -PORT (define the listening port: 3001 or another)  
 
 1. Clone the repository
 
@@ -71,10 +71,10 @@ npm run dev
 ## Technologies
 
 This project use React.js as frontend. 
-At backend using Node.js with Express, Mongoose, CORS, Dotenv and ESlint for maintain good practices and standards.
+At backend using Node.js with Express, Mongoose, CORS, Dotenv and ESlint for maintain good practices and standards.  
 
-Se utiliza la libreria bcrypt para almacenar los hash en la base de datos.
-se utiliza la libreria jwt para generar token para la autenticacion de los usuarios.
+Se utiliza la libreria bcrypt para almacenar los hash en la base de datos.  
+se utiliza la libreria jwt para generar token para la autenticacion de los usuarios.  
 
 ## Developer
 
