@@ -13,6 +13,7 @@ const app = express() //Se inicializa una instancia de la app Express, que será
 require('express-async-errors')
 const cors = require('cors') //Importa el middleware cors, que habilita el CORS para permitir que el servidor acepte solicitudes desde diferentes dominios.
 const usersRouter = require('./controllers/users')
+const loginRouter = require('./controllers/login')
 const billsRouter = require('./controllers/bills') //Importa un enrutador para manejar rutas relacionadas con la entidad bills
 const middleware = require('./utils/middleware') //Importa middleware personalizado para manejar errores, logs, etc.
 const logger = require('./utils/logger') //Importa modulo para registrar mensajes de log (información y errores)
@@ -34,6 +35,7 @@ app.use(express.static('dist')) //Sirve archivos estáticos desde el directorio 
 app.use(express.json()) //Habilita el middleware para el manejo de solicitudes HTTP entrantes al servidor que contienen cuerpos de datos en formato JSON
 app.use(middleware.requestLogger) //Aplica el middleware personalizado para mostrar por consola los detalles de cada solicitud HTTP que llega al servidor
 
+app.use('/api/login', loginRouter)
 app.use('/api/users', usersRouter)
 app.use('/api/bills', billsRouter) //Monta el enrutador billsRouter en el endpoint /api/bills. Esto significa que todas las solicitudes que lleguen a /api/bills serán manejadas por las rutas definidas en el archivo ./controllers/bills
 

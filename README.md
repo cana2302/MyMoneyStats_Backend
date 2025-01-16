@@ -36,10 +36,11 @@ https://mymoneystats-backend.onrender.com
   ## First steps
 
 > [!NOTE]
-> The project connects to a MongoDB database. To deploy the project locally, you can either choose to connect to a local MongoDB database (using MongoDB Community Edition) and manage the database yourself, or you can opt to connect the project to an online MongoDB Cluster.  
+> The project connects to a MongoDB database. To deploy the project locally, you can either choose to connect to a local MongoDB database (using MongoDB Community Edition or Percona Server for MongoDB) and manage the database yourself, or you can opt to connect the project to an online MongoDB Cluster (like MongoDB Atlas).  
 In either case, it is important to define environment variables before deploying the project ('.env'):  
 &nbsp;&nbsp;&nbsp;&nbsp;-MONGODB_URI  
 &nbsp;&nbsp;&nbsp;&nbsp;-PORT (define the listening port: 3001 or another)  
+&nbsp;&nbsp;&nbsp;&nbsp;-SECRET (to generate tokens)  
 
 1. Clone the repository
 

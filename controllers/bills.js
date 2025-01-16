@@ -7,6 +7,7 @@
 const billsRouter = require('express').Router()
 const Bill = require('../models/bill')
 const User = require('../models/user')
+const jwt = require('jsonwebtoken')
 
 // ----- GET ------
 
@@ -15,6 +16,14 @@ billsRouter.get('/', async (request, response) => {
   const bills = await Bill.find({})    // .populate('user', { username: 1, email: 1 })
   response.json(bills)
 })
+
+const getTokenFrom = request => {
+  const authorization = request.get('authorization')
+  if (authorization && authorization.startsWith('Bearer ')) {
+    return authorization.replace('Bearer ', '')
+  }
+  return null
+}
 
 // GET specific ID bill
 billsRouter.get('/id/:id', async (request, response) => {
@@ -41,11 +50,17 @@ billsRouter.get('/info', async (request, response) => {
 // ----- POST --------
 billsRouter.post('/', async (request, response) => {
   const body = request.body;
-  const user = await User.findById(body.userId)
  
   if (body.date === undefined || body.category === undefined || body.description === undefined || body.amount === undefined) {
     return response.status(400).json({ error: 'content missing' })
   }
+
+  const decodedToken = jwt.verify(getTokenFrom(request), process.env.SECRET)
+  if (!decodedToken.id) {
+    return response.status(401).json({ error: 'token invalid' })
+  }
+
+  const user = await User.findById(decodedToken.id)
 
   const bill = new Bill({
     date: body.date,
