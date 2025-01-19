@@ -3,11 +3,9 @@
   Modulo dedicado al control de eventos de rutas.
   Se crea el modulo y se exporta un objeto enrutador (billsRouter) que incluye todas las rutas
 */
-
 const billsRouter = require('express').Router()
 const Bill = require('../models/bill')
 const User = require('../models/user')
-const jwt = require('jsonwebtoken')
 
 // ----- GET ------
 
@@ -17,13 +15,6 @@ billsRouter.get('/', async (request, response) => {
   response.json(bills)
 })
 
-const getTokenFrom = request => {
-  const authorization = request.get('authorization')
-  if (authorization && authorization.startsWith('Bearer ')) {
-    return authorization.replace('Bearer ', '')
-  }
-  return null
-}
 
 // GET specific ID bill
 billsRouter.get('/id/:id', async (request, response) => {
@@ -49,18 +40,18 @@ billsRouter.get('/info', async (request, response) => {
 
 // ----- POST --------
 billsRouter.post('/', async (request, response) => {
-  const body = request.body;
+  const body = request.body
+  const userId = request.user.id
+
+  if (!userId) {
+    return response.status(401).json({ error: 'user invalid' })
+  }
  
   if (body.date === undefined || body.category === undefined || body.description === undefined || body.amount === undefined) {
     return response.status(400).json({ error: 'content missing' })
   }
 
-  const decodedToken = jwt.verify(getTokenFrom(request), process.env.SECRET)
-  if (!decodedToken.id) {
-    return response.status(401).json({ error: 'token invalid' })
-  }
-
-  const user = await User.findById(decodedToken.id)
+  const user = await User.findById(userId)
 
   const bill = new Bill({
     date: body.date,
@@ -76,10 +67,19 @@ billsRouter.post('/', async (request, response) => {
   response.status(201).json(savedBill)
 });
 
-// ----- DELETE ------
+// ----- DELETE ID------
 billsRouter.delete('/:id', async (request, response) => {
-  await Bill.findByIdAndDelete(request.params.id)
-  response.status(204).end()
+  const billId = request.params.id
+  const bill = await Bill.findByIdAndDelete(billId)
+  const idUserCreator = bill.user.toString()
+  const idUserTryToDelete = request.user.id
+
+  if (idUserCreator === idUserTryToDelete) {
+    await Bill.findByIdAndDelete(billId)
+    response.status(204).end()
+  } else {
+    response.status(403).json({ error: 'wrong token. invalid operation' })
+  }
 });
 
 // ---- EXPORT  modulo ----

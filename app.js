@@ -34,7 +34,8 @@ app.use(cors()) //Habilita el middleware CORS para permitir que la API acepte so
 app.use(express.static('dist')) //Sirve archivos estáticos desde el directorio dist. Archivos de app-frontend (proyecto de React o Vue) desde el mismo servidor backend.
 app.use(express.json()) //Habilita el middleware para el manejo de solicitudes HTTP entrantes al servidor que contienen cuerpos de datos en formato JSON
 app.use(middleware.requestLogger) //Aplica el middleware personalizado para mostrar por consola los detalles de cada solicitud HTTP que llega al servidor
-
+app.use(middleware.tokenExtractor) // Extrae el token del encabezado de la request
+app.use(middleware.userExtractor) // Verifica el token y extrae el id del user
 app.use('/api/login', loginRouter)
 app.use('/api/users', usersRouter)
 app.use('/api/bills', billsRouter) //Monta el enrutador billsRouter en el endpoint /api/bills. Esto significa que todas las solicitudes que lleguen a /api/bills serán manejadas por las rutas definidas en el archivo ./controllers/bills

@@ -4,6 +4,7 @@
   Middleware personalizado que cuenta con 3 funciones
 */
 const logger = require('./logger')
+const jwt = require('jsonwebtoken')
 
 // Registra por consola detalles de cada solicitud HTTP que llega al servidor (método, URL, el cuerpo)
 const requestLogger = (request, response, next) => {
@@ -36,8 +37,40 @@ const errorHandler = (error, request, response, next) => {
   next(error)
 }
 
+const tokenExtractor = (request, response, next) => {
+  const authorization = request.get('authorization');
+
+  if (authorization && authorization.toLowerCase().startsWith('bearer ')) {
+    request.token = authorization.substring(7); // Extrae el token después de 'Bearer '
+  } else {
+    request.token = null; // Si no hay token, asigna null
+  }
+
+  next();
+}
+
+const userExtractor = (request, response, next) => {
+  const token = request.token
+  
+  if (token) {
+    const decodedToken = jwt.verify(request.token, process.env.SECRET)
+    request.user = {
+      id: decodedToken.id.toString(), // Extrae el id user desde el token
+      username: decodedToken.username ? decodedToken.username.toString() : null
+    }
+    
+  } else {
+    request.user = null // Si no hay token, asigna null
+  }
+
+  next();
+}
+
+
 module.exports = {
   requestLogger,
   unknownEndpoint,
-  errorHandler
+  errorHandler,
+  tokenExtractor,
+  userExtractor
 }

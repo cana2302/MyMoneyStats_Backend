@@ -3,8 +3,14 @@ const usersRouter = require('express').Router()
 const User = require('../models/user')
 
 usersRouter.get('/', async (request, response) => {
-  const users = await User.find({}).populate('bills', { date: 1, category: 1, description: 1, amount: 1 })
-  response.json(users)
+  const username = request.user.username
+  console.log('username: ', username)
+  if (username === null || username !== 'admin') {
+    return response.status(403).json({ error: 'unauthorized user' })
+  } else if (username === 'admin') {
+    const users = await User.find({}).populate('bills', { date: 1, category: 1, description: 1, amount: 1 })
+    response.json(users)
+  }
 })
 
 usersRouter.post('/', async (request, response) => {

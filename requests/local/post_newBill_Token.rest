@@ -1,6 +1,6 @@
 POST http://localhost:3001/api/bills
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImNhbmEyMzAyIiwiaWQiOiI2Nzg4MjhjMzYzMDExNDQzYzg4ZTMzODQiLCJpYXQiOjE3MzcwMjQ3ODUsImV4cCI6MTczNzAyODM4NX0.uwn9YZBoGlyen1rQ2fHr7KcN_yN2hWRX811dnlNKsCE
+Authorization: Bearer 'token'
 
 {
     "date": "2025-01-15",
