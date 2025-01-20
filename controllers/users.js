@@ -3,6 +3,7 @@ const usersRouter = require('express').Router()
 const User = require('../models/user')
 const validation = require('../utils/validation')
 
+// ---- GET USERS ----
 usersRouter.get('/', async (request, response) => {
   const username = request.user.username
   if (username === null || username !== 'admin') {
@@ -13,6 +14,7 @@ usersRouter.get('/', async (request, response) => {
   }
 })
 
+// ---- POST USERS ----
 usersRouter.post('/', async (request, response) => {
   const { username, email, password } = request.body
 
@@ -38,5 +40,20 @@ usersRouter.post('/', async (request, response) => {
 
   response.status(201).json(savedUser)
 })
+
+// ---- DELETE USER ID ----
+usersRouter.delete('/:id', async (request, response) => {
+  const userId = request.params.id
+  const userTryToDelete = request.user.username
+  
+  if (userTryToDelete === 'admin') {
+    await User.findByIdAndDelete(userId)
+    response.status(204).end()
+  } else {
+    response.status(403).json({ error: 'wrong token. invalid operation' })
+  }
+
+})
+
 
 module.exports = usersRouter
