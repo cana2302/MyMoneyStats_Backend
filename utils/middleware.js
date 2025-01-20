@@ -57,7 +57,8 @@ const userExtractor = (request, response, next) => {
     request.user = 
       {
         id: decodedToken.id.toString(), // Extrae el id user desde el token
-        username: decodedToken.username ? decodedToken.username.toString() : null
+        username: decodedToken.username ? decodedToken.username.toString() : null,
+        role: decodedToken.role ? decodedToken.role.toString() : null
       }  
   } else {  
     request.user = null // Si no hay token, asigna null

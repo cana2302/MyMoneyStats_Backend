@@ -22,7 +22,21 @@ const validationPassword = (password, response) => {
   }
 }
 
+const adminRoleValidation = (user) => {
+  if (user !== null){
+    const userRole = user.role
+    if (userRole !== 'admin') {
+      return false
+    } else if (userRole === 'admin') {
+      return true
+    }
+  } else {
+    return false
+  }
+}
+
 module.exports = {
   validationUsername, 
-  validationPassword
+  validationPassword,
+  adminRoleValidation
 }

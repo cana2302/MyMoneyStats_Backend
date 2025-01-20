@@ -5,18 +5,25 @@ const validation = require('../utils/validation')
 
 // ---- GET USERS (ONLY ADMIN)----
 usersRouter.get('/', async (request, response) => {
-  const username = request.user.username
-  if (username === null || username !== 'admin') {
-    return response.status(403).json({ error: 'unauthorized user' })
-  } else if (username === 'admin') {
+
+  if (validation.adminRoleValidation(request.user)) {
     const users = await User.find({}).populate('bills', { date: 1, category: 1, description: 1, amount: 1 })
     response.json(users)
+  } else {
+    response.status(403).json({ error: 'unauthorized user' })
   }
 })
 
 // ---- POST NEW USERS ----
 usersRouter.post('/', async (request, response) => {
   const { username, email, password } = request.body
+  let userRole = 'user'
+  
+  if (validation.adminRoleValidation(request.user)) {
+    userRole = 'admin'
+  } else {
+    userRole = 'user'
+  }
 
   validation.validationUsername(username, response)
   validation.validationPassword(password, response)
@@ -29,11 +36,13 @@ usersRouter.post('/', async (request, response) => {
 
   const saltRounds = 10
   const passwordHash = await bcryptjs.hash(password, saltRounds)
+  const role = userRole
 
   const user = new User({
     username, 
     email,
     passwordHash,
+    role,
   })
 
   const savedUser = await user.save()
@@ -44,16 +53,13 @@ usersRouter.post('/', async (request, response) => {
 // ---- DELETE USER ID (ONLY ADMIN) ----
 usersRouter.delete('/:id', async (request, response) => {
   const userId = request.params.id
-  const userTryToDelete = request.user.username
-  
-  if (userTryToDelete === 'admin') {
+
+  if (validation.adminRoleValidation(request.user)) {
     await User.findByIdAndDelete(userId)
     response.status(204).end()
   } else {
     response.status(403).json({ error: 'wrong token. invalid operation' })
   }
-
 })
-
 
 module.exports = usersRouter
