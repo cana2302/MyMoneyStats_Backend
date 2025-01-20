@@ -37,6 +37,7 @@ app.use(middleware.requestLogger) //Aplica el middleware personalizado para most
 app.use(middleware.tokenExtractor) // Extrae el token del encabezado de la request
 app.use(middleware.userExtractor) // Verifica el token y extrae el id del user
 app.use('/api/login', loginRouter)
+
 app.use('/api/users', usersRouter)
 app.use('/api/bills', billsRouter) //Monta el enrutador billsRouter en el endpoint /api/bills. Esto significa que todas las solicitudes que lleguen a /api/bills serán manejadas por las rutas definidas en el archivo ./controllers/bills
 

@@ -1,7 +1,8 @@
 /*
   ---- Modulo 'middleware' -----
   Importa el modulo 'logger' para realizar impresiones por consola
-  Middleware personalizado que cuenta con 3 funciones
+  Libreria JasonWebToken para poder generar Tokens
+  Middleware personalizado
 */
 const logger = require('./logger')
 const jwt = require('jsonwebtoken')
@@ -32,8 +33,7 @@ const errorHandler = (error, request, response, next) => {
     return response.status(401).json({ error: 'token invalid' })
   } else if (error.name === 'TokenExpiredError') {
     return response.status(401).json({ error: 'token expired' })
-  }
-
+  } 
   next(error)
 }
 
@@ -54,12 +54,12 @@ const userExtractor = (request, response, next) => {
   
   if (token) {
     const decodedToken = jwt.verify(request.token, process.env.SECRET)
-    request.user = {
-      id: decodedToken.id.toString(), // Extrae el id user desde el token
-      username: decodedToken.username ? decodedToken.username.toString() : null
-    }
-    
-  } else {
+    request.user = 
+      {
+        id: decodedToken.id.toString(), // Extrae el id user desde el token
+        username: decodedToken.username ? decodedToken.username.toString() : null
+      }  
+  } else {  
     request.user = null // Si no hay token, asigna null
   }
 

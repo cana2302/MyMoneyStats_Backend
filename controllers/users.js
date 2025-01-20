@@ -1,10 +1,10 @@
 const bcryptjs = require('bcryptjs')
 const usersRouter = require('express').Router()
 const User = require('../models/user')
+const validation = require('../utils/validation')
 
 usersRouter.get('/', async (request, response) => {
   const username = request.user.username
-  console.log('username: ', username)
   if (username === null || username !== 'admin') {
     return response.status(403).json({ error: 'unauthorized user' })
   } else if (username === 'admin') {
@@ -16,13 +16,12 @@ usersRouter.get('/', async (request, response) => {
 usersRouter.post('/', async (request, response) => {
   const { username, email, password } = request.body
 
+  validation.validationUsername(username, response)
+  validation.validationPassword(password, response)
+
   const checkUsername = await User.findOne({ username })
 
-  if (!username || !password) {
-    return response.status(400).json({ error: 'content missing' })
-  } else if (username.length<3 || password.length<3) {
-    return response.status(400).json({ error: ' must be at least 3 characters long' })
-  } else if (checkUsername) {
+  if (checkUsername) {
     return response.status(400).json({ error: 'username must be unique' })
   }
 
