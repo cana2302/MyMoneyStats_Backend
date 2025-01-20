@@ -38,7 +38,7 @@ billsRouter.get('/info', async (request, response) => {
   )
 })
 
-// ----- POST --------
+// ----- POST NEW BILL (BY USER) --------
 billsRouter.post('/', async (request, response) => {
   const body = request.body
   const userId = request.user.id
@@ -67,7 +67,7 @@ billsRouter.post('/', async (request, response) => {
   response.status(201).json(savedBill)
 });
 
-// ----- DELETE ID------
+// ----- DELETE BILL BY ID (ONLY CREATOR USER) ------
 billsRouter.delete('/:id', async (request, response) => {
   const billId = request.params.id
   const bill = await Bill.findByIdAndDelete(billId)

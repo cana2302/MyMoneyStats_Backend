@@ -3,7 +3,7 @@ const usersRouter = require('express').Router()
 const User = require('../models/user')
 const validation = require('../utils/validation')
 
-// ---- GET USERS ----
+// ---- GET USERS (ONLY ADMIN)----
 usersRouter.get('/', async (request, response) => {
   const username = request.user.username
   if (username === null || username !== 'admin') {
@@ -14,7 +14,7 @@ usersRouter.get('/', async (request, response) => {
   }
 })
 
-// ---- POST USERS ----
+// ---- POST NEW USERS ----
 usersRouter.post('/', async (request, response) => {
   const { username, email, password } = request.body
 
@@ -41,7 +41,7 @@ usersRouter.post('/', async (request, response) => {
   response.status(201).json(savedUser)
 })
 
-// ---- DELETE USER ID ----
+// ---- DELETE USER ID (ONLY ADMIN) ----
 usersRouter.delete('/:id', async (request, response) => {
   const userId = request.params.id
   const userTryToDelete = request.user.username
