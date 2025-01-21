@@ -9,21 +9,30 @@ const User = require('../models/user')
 
 // ----- GET ------
 
-// GET All bills
+// -----GET-ALL bills (only for the user who created it) -----
 billsRouter.get('/', async (request, response) => {
-  const bills = await Bill.find({})    // .populate('user', { username: 1, email: 1 })
-  response.json(bills)
+  if (request.user !== null) {
+    const idUserTryToGetBills = request.user.id
+    const bills = await Bill.find({user:idUserTryToGetBills})
+    response.json(bills)
+  } else {
+    response.status(403).json({ error: 'You have to be login first' })
+  }
 })
 
-
-// GET specific ID bill
+// -----GET specific ID bill (only for the user who created it) -----
 billsRouter.get('/id/:id', async (request, response) => {
-  const bill = await Bill.findById(request.params.id)
-  if (bill) {
-    response.json(bill)
+  if (request.user !== null) {
+    const idUserTryToGetSpecificBill = request.user.id
+    const bill = await Bill.findById(request.params.id)
+    if (idUserTryToGetSpecificBill === bill.user.toString()) {
+      response.json(bill)
+    } else {
+      response.status(403).json({ error: 'unauthorized user' })
+    }      
   } else {
-    response.status(404).end()
-  }
+    response.status(403).json({ error: 'You have to be login first' })
+  }  
 })
 
 // GET Information & CurrentDate

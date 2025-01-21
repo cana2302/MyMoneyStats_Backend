@@ -34,6 +34,11 @@ usersRouter.post('/', async (request, response) => {
     return response.status(400).json({ error: 'username must be unique' })
   }
 
+  const checkIfAdminUsernameExistInDb = await User.findOne({username:'admin'})
+  if (!checkIfAdminUsernameExistInDb && username === 'admin') {
+    userRole = 'admin'
+  }
+
   const saltRounds = 10
   const passwordHash = await bcryptjs.hash(password, saltRounds)
   const role = userRole
