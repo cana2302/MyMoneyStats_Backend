@@ -5,6 +5,7 @@
   Middleware personalizado
 */
 const logger = require('./logger')
+const config = require('../utils/config')
 const jwt = require('jsonwebtoken')
 
 // Registra por consola detalles de cada solicitud HTTP que llega al servidor (método, URL, el cuerpo)
@@ -38,14 +39,16 @@ const errorHandler = (error, request, response, next) => {
 }
 
 const tokenExtractor = (request, response, next) => {
-  const authorization = request.get('authorization');
+  const authorization = request.get('authorization')
+  const cookies_access = request.cookies.access_token
 
   if (authorization && authorization.toLowerCase().startsWith('bearer ')) {
     request.token = authorization.substring(7); // Extrae el token después de 'Bearer '
+  } else if (authorization === null && cookies_access !== null) {
+    request.token = cookies_access // Extrae el token de las cookies
   } else {
     request.token = null; // Si no hay token, asigna null
   }
-
   next();
 }
 
@@ -53,7 +56,7 @@ const userExtractor = (request, response, next) => {
   const token = request.token
   
   if (token) {
-    const decodedToken = jwt.verify(request.token, process.env.SECRET)
+    const decodedToken = jwt.verify(request.token, config.SECRET_JWT_KEY)
     request.user = 
       {
         id: decodedToken.id.toString(), // Extrae el id user desde el token
