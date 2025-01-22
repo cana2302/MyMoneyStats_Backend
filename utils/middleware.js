@@ -44,7 +44,7 @@ const tokenExtractor = (request, response, next) => {
 
   if (authorization && authorization.toLowerCase().startsWith('bearer ')) {
     request.token = authorization.substring(7); // Extrae el token después de 'Bearer '
-  } else if (authorization === null && cookies_access !== null) {
+  } else if (cookies_access !== null) {
     request.token = cookies_access // Extrae el token de las cookies
   } else {
     request.token = null; // Si no hay token, asigna null
@@ -62,7 +62,7 @@ const userExtractor = (request, response, next) => {
         id: decodedToken.id.toString(), // Extrae el id user desde el token
         username: decodedToken.username ? decodedToken.username.toString() : null,
         role: decodedToken.role ? decodedToken.role.toString() : null
-      }  
+      }
   } else {  
     request.user = null // Si no hay token, asigna null
   }

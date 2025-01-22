@@ -36,8 +36,8 @@ loginRouter.post('/', async (request, response) => {
     .status(200)
     .cookie('access_token', token, {
       httpOnly:true, // la cookie solo se puede acceder en el servidor. No se va a poder leer desde el cliente
-      secure: process.env.NODE_ENV === 'start',// si es produccion solo funciona con https
-      sameSite: 'strict', // solo se puede acceder desde el mismo dominio, no se envia a otro dominio
+      secure: process.env.NODE_ENV === 'production',// si es produccion solo funciona con https
+      sameSite: 'lax', // solo se puede acceder desde el mismo dominio, no se envia a otro dominio
       maxAge: 1000 * 60 * 60 // la cookie solo tiene validez 1 hora
     }) 
     .send({ token, username: user.username, id: user.id })

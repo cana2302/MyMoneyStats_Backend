@@ -4,7 +4,7 @@
 
 Codebase for my portfolio.
 
-Fullstack application:  
+Fullstack application:  (Monolitica: el frontend servido desde el backend en el mismo dominio y usa cookies HttpOnly)
 &nbsp;&nbsp;&nbsp;&nbsp;-Frontend> UI> React.js (./dist)  
 &nbsp;&nbsp;&nbsp;&nbsp;-Backend> Server-side logic> Node.js with Express. (Handling HTTP requests, interacting with database, authentication, data processing)  
 &nbsp;&nbsp;&nbsp;&nbsp;-Database: MongoDB.

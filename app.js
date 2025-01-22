@@ -12,6 +12,7 @@ const app = express() //Se inicializa una instancia de la app Express, que será
 require('express-async-errors')
 const cors = require('cors') //Importa el middleware cors, que habilita el CORS para permitir que el servidor acepte solicitudes desde diferentes dominios.
 const usersRouter = require('./controllers/users')
+const sessionRouter = require ('./controllers/session')
 const loginRouter = require('./controllers/login')
 const logoutRouter = require('./controllers/logout')
 const billsRouter = require('./controllers/bills') //Importa un enrutador para manejar rutas relacionadas con la entidad bills
@@ -39,10 +40,11 @@ app.use(middleware.requestLogger) //Aplica el middleware personalizado para most
 app.use(middleware.tokenExtractor) // Extrae el token del encabezado de la request
 app.use(middleware.userExtractor) // Verifica el token y extrae el id del user
 
-app.use('/api/login', loginRouter)
-app.use('/api/users', usersRouter)
+app.use('/api/session', sessionRouter)  // Verificar si existe cookie y devuelve user: id, username, role
+app.use('/api/login', loginRouter)    // obtener token
+app.use('/api/users', usersRouter)    // crear, obtener y eliminar usuarios
 app.use('/api/bills', billsRouter) //Monta el enrutador billsRouter en el endpoint /api/bills. Esto significa que todas las solicitudes que lleguen a /api/bills serán manejadas por las rutas definidas en el archivo ./controllers/bills
-app.use('/api/logout', logoutRouter) // Para cerrar la sesion, eliminar la cookie con el acces_token
+app.use('/api/logout', logoutRouter) // Para cerrar la sesion, elimina la cookie acces_token
 
 app.use(middleware.unknownEndpoint) //Aplica un middleware para manejar las solicitudes a endpoints no definidos en la app. Este middleware va a devolver una respuesta con un mensaje de "404 - Not Found" si la ruta solicitada no existe.
 app.use(middleware.errorHandler) //Aplica un middleware para manejar errores. Se encarga de capturar y gestionar cualquier error que ocurra en la app, devolverá respuestas adecuadas con el estado de error y un mensaje informativo.
