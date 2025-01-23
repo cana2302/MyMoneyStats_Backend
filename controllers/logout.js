@@ -1,4 +1,3 @@
-const { response } = require('../app')
 const logoutRouter = require('express').Router()
 
 // ----- POST ----
