@@ -8,8 +8,8 @@ const config = require('../utils/config')
 loginRouter.post('/', async (request, response) => {
   const { username, password } = request.body
 
-  validation.validationUsername(username, response)
-  validation.validationPassword(password, response)
+  if (!validation.validationUsername(username, response)) return
+  if (!validation.validationPassword(password, response)) return
 
   const user = await User.findOne({ username })
 

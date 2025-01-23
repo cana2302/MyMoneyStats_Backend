@@ -4,22 +4,30 @@
 */
 const validationUsername = (username, response) => {
   if (username === null) {
-    return response.status(400).json({ error: 'username missing' })
+    response.status(400).json({ error: 'username missing' })
+    return false
   } else if (username.length<3) {
-    return response.status(400).json({ error: 'username must be at least 3 characters long' })
+    response.status(400).json({ error: 'username must be at least 3 characters long' })
+    return false
   } else if (typeof username !== 'string') {
-    return response.status(400).json({ error: 'username must be a string' })
+    response.status(400).json({ error: 'username must be a string' })
+    return false
   }
+  return true
 }
 
 const validationPassword = (password, response) => {
   if (password === null) {
-    return response.status(400).json({ error: 'password missing' })
+    response.status(400).json({ error: 'password missing' })
+    return false
   } else if (password.length<4) {
-    return response.status(400).json({ error: 'password must be at least 4 characters long' })
+    response.status(400).json({ error: 'password must be at least 4 characters long' })
+    return false
   } else if (typeof password !== 'string') {
-    return response.status(400).json({ error: 'password must be a string' })
+    response.status(400).json({ error: 'password must be a string' })
+    return false
   }
+  return true
 }
 
 const adminRoleValidation = (user) => {
