@@ -3,7 +3,7 @@
   Modulo para validar los input como user y password.
 */
 const validationUsername = (username, response) => {
-  if (!username) {
+  if (username === null) {
     return response.status(400).json({ error: 'username missing' })
   } else if (username.length<3) {
     return response.status(400).json({ error: 'username must be at least 3 characters long' })
@@ -13,7 +13,7 @@ const validationUsername = (username, response) => {
 }
 
 const validationPassword = (password, response) => {
-  if (!password) {
+  if (password === null) {
     return response.status(400).json({ error: 'password missing' })
   } else if (password.length<4) {
     return response.status(400).json({ error: 'password must be at least 4 characters long' })

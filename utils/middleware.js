@@ -46,7 +46,7 @@ const tokenExtractor = (request, response, next) => {
     request.token = authorization.substring(7); // Extrae el token después de 'Bearer '
   } else if (cookies_access !== null) {
     request.token = cookies_access // Extrae el token de las cookies
-  } else {
+  } else if (authorization === null && cookies_access === null){
     request.token = null; // Si no hay token, asigna null
   }
   next();
@@ -56,17 +56,19 @@ const userExtractor = (request, response, next) => {
   const token = request.token
   
   if (token) {
-    const decodedToken = jwt.verify(request.token, config.SECRET_JWT_KEY)
-    request.user = 
-      {
+    try {
+      const decodedToken = jwt.verify(request.token, config.SECRET_JWT_KEY);
+      request.user = {
         id: decodedToken.id.toString(), // Extrae el id user desde el token
         username: decodedToken.username ? decodedToken.username.toString() : null,
         role: decodedToken.role ? decodedToken.role.toString() : null
       }
-  } else {  
-    request.user = null // Si no hay token, asigna null
+    } catch (error) {
+      return response.status(401).json({ error: 'Token inválido o expirado' }); // Maneja el error si el token no es válido
+    }
+  } else {
+    request.user = null; // Si no hay token, asigna null
   }
-
   next();
 }
 
@@ -78,3 +80,23 @@ module.exports = {
   tokenExtractor,
   userExtractor
 }
+
+/*
+const userExtractor = (request, response, next) => {
+  const token = request.token
+  
+  if (token) {
+    const decodedToken = jwt.verify(request.token, config.SECRET_JWT_KEY)
+    request.user = 
+      {
+        id: decodedToken.id.toString(), // Extrae el id user desde el token
+        username: decodedToken.username ? decodedToken.username.toString() : null,
+        role: decodedToken.role ? decodedToken.role.toString() : null
+      }
+  } else if (token === null){  
+    request.user = null // Si no hay token, asigna null
+  }
+  next();
+}
+
+*/
