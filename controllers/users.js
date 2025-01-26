@@ -2,7 +2,7 @@ const bcryptjs = require('bcryptjs')
 const usersRouter = require('express').Router()
 const User = require('../models/user')
 const validation = require('../utils/validation')
-const config = require('./utils/config') //Importa el modulo config (contiene variables de entorno)
+const config = require('../utils/config') //Importa el modulo config (contiene variables de entorno)
 
 
 // ---- GET USERS (ONLY ADMIN)----
