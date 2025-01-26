@@ -2,6 +2,8 @@ const bcryptjs = require('bcryptjs')
 const usersRouter = require('express').Router()
 const User = require('../models/user')
 const validation = require('../utils/validation')
+const config = require('./utils/config') //Importa el modulo config (contiene variables de entorno)
+
 
 // ---- GET USERS (ONLY ADMIN)----
 usersRouter.get('/', async (request, response) => {
@@ -16,7 +18,9 @@ usersRouter.get('/', async (request, response) => {
 
 // ---- POST NEW USERS ----
 usersRouter.post('/', async (request, response) => {
-  const { username, email, password } = request.body
+  const { username, email, password, code } = request.body
+  const AUTHORIZATION_CODE = config.AUTHORIZATION_CODE
+  let checkCode = 'false'
   let userRole = 'user'
   
   if (validation.adminRoleValidation(request.user)) {
@@ -27,6 +31,7 @@ usersRouter.post('/', async (request, response) => {
 
   validation.validationUsername(username, response)
   validation.validationPassword(password, response)
+  checkCode = validation.codeValidation(AUTHORIZATION_CODE, code, response)
 
   const checkUsername = await User.findOne({ username })
 
@@ -49,6 +54,7 @@ usersRouter.post('/', async (request, response) => {
     passwordHash,
     role,
   })
+
 
   const savedUser = await user.save()
 

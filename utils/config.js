@@ -12,8 +12,11 @@ const MONGODB_URI = process.env.NODE_ENV === 'test'
 
 const SECRET_JWT_KEY = process.env.SECRET_JWT_KEY
 
+const AUTHORIZATION_CODE = process.env.AUTHORIZATION_CODE
+
 module.exports = {
   MONGODB_URI,
   PORT,
-  SECRET_JWT_KEY
+  SECRET_JWT_KEY,
+  AUTHORIZATION_CODE
 }

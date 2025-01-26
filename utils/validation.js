@@ -30,6 +30,17 @@ const validationPassword = (password, response) => {
   return true
 }
 
+const codeValidation = (AUTHORIZATION_CODE ,code, response) => {
+  if (typeof code !== 'string'){
+    response.status(400).json({ error: 'password must be a string' })
+    return false
+  } else if (code !== AUTHORIZATION_CODE){
+    response.status(400).json({ error: 'wrong code' })
+    return false
+  }
+  return true
+}
+
 const adminRoleValidation = (user) => {
   if (user !== null){
     const userRole = user.role
@@ -46,5 +57,6 @@ const adminRoleValidation = (user) => {
 module.exports = {
   validationUsername, 
   validationPassword,
-  adminRoleValidation
+  adminRoleValidation,
+  codeValidation
 }
