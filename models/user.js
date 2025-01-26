@@ -4,9 +4,20 @@ const userSchema = new mongoose.Schema({
   username: {
     type: String,
     required: true,
-    unique: true // esto asegura la unicidad de username
+    unique: true, // esto asegura la unicidad de username
+    lowercase: true,  // Almacena el username siempre en minúsculas
+    trim: true,  // Elimina espacios en blanco alrededor del username
   },
-  email: String,
+  email: {
+    type: String,
+    trim: true,
+    validate: {
+      validator: function(v) {
+        return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v); // Expresión regular básica para validar emails
+      },
+      message: props => `${props.value} invalid email`
+    }
+  },
   passwordHash: String,
   role: String,
   bills: [

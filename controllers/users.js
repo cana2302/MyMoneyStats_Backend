@@ -19,29 +19,28 @@ usersRouter.get('/', async (request, response) => {
 // ---- POST NEW USERS ----
 usersRouter.post('/', async (request, response) => {
   const { username, email, password, code } = request.body
-  const AUTHORIZATION_CODE = config.AUTHORIZATION_CODE
-  let checkCode = 'false'
-  let userRole = 'user'
-  
-  if (validation.adminRoleValidation(request.user)) {
+
+  const AUTHORIZATION_CODE_ADMIN = config.AUTHORIZATION_CODE_ADMIN
+  const AUTHORIZATION_CODE_USER = config.AUTHORIZATION_CODE_USER
+  let userRole = ''
+
+  validation.codeValidation(code, response)
+
+  if (code === AUTHORIZATION_CODE_USER) {
+    userRole = 'user'
+  } else if (code === AUTHORIZATION_CODE_ADMIN) {
     userRole = 'admin'
   } else {
-    userRole = 'user'
+    return response.status(400).json({ error: 'invalid authorizaion code' })
   }
-
+  
   validation.validationUsername(username, response)
   validation.validationPassword(password, response)
-  checkCode = validation.codeValidation(AUTHORIZATION_CODE, code, response)
-
+  
   const checkUsername = await User.findOne({ username })
 
   if (checkUsername) {
-    return response.status(400).json({ error: 'username must be unique' })
-  }
-
-  const checkIfAdminUsernameExistInDb = await User.findOne({username:'admin'})
-  if (!checkIfAdminUsernameExistInDb && username === 'admin') {
-    userRole = 'admin'
+    return response.status(409).json({ error: 'username must be unique' })
   }
 
   const saltRounds = 10
@@ -55,10 +54,9 @@ usersRouter.post('/', async (request, response) => {
     role,
   })
 
-  if (checkCode) {
-    const savedUser = await user.save()
-    response.status(201).json(savedUser)
-  }
+  const savedUser = await user.save()
+  response.status(201).json(savedUser)
+
 })
 
 // ---- DELETE USER ID (ONLY ADMIN) ----

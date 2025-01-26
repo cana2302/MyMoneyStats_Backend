@@ -30,14 +30,14 @@ const validationPassword = (password, response) => {
   return true
 }
 
-const codeValidation = (AUTHORIZATION_CODE ,code, response) => {
-  if (typeof code !== 'string'){
-    response.status(400).json({ error: 'password must be a string' })
+const codeValidation = (code, response) => {
+  if (code === null) {
+    response.status(400).json({ error: 'code missing' })
     return false
-  } else if (code !== AUTHORIZATION_CODE){
-    response.status(400).json({ error: 'wrong code' })
+  } else if (typeof code !== 'string'){
+    response.status(400).json({ error: 'code must be a string' })
     return false
-  }
+  } 
   return true
 }
 
